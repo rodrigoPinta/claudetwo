@@ -1,647 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rodrigo - Portfolio</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      color: #e2e8f0;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-      min-height: 100vh;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e2e8f0;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-    /* Navigation */
-    #navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      padding: 1rem 0;
-      transition: all 0.3s ease;
-    }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
 
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 2rem;
-      position: relative;
-    }
+        nav.scrolled {
+            background: rgba(26, 26, 46, 0.98);
+            box-shadow: 0 2px 20px rgba(59, 130, 246, 0.1);
+        }
 
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-    }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+        }
 
-    .nav-links a {
-      color: #e2e8f0;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px;
+            z-index: 1001;
+        }
 
-    .nav-links a:hover {
-      color: #3b82f6;
-    }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
 
-    /* Enhanced Language Toggle */
-    .lang-toggle {
-      position: absolute;
-      right: 5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 80px;
-      height: 36px;
-      background: rgba(59, 130, 246, 0.2);
-      border: 1px solid rgba(59, 130, 246, 0.5);
-      border-radius: 20px;
-      padding: 0 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
 
-    .lang-toggle:hover {
-      background: rgba(59, 130, 246, 0.3);
-      border-color: #3b82f6;
-    }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
 
-    .lang-label {
-      font-size: 12px;
-      color: #94a3b8;
-      font-weight: normal;
-      z-index: 2;
-      transition: color 0.3s, font-weight 0.3s;
-    }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
 
-    .lang-label.active {
-      color: #e2e8f0;
-      font-weight: bold;
-    }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
 
-    .lang-knob {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 28px;
-      height: 28px;
-      background: #3b82f6;
-      border-radius: 50%;
-      transition: left 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: bold;
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-    }
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
 
-    .lang-knob::before {
-      content: "EN";
-      transition: content 0.3s ease;
-    }
+        .nav-links a:hover {
+            color: #3b82f6;
+            text-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+        }
 
-    /* PT active */
-    .lang-toggle[data-lang="pt"] .lang-knob {
-      left: calc(100% - 32px);
-    }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
 
-    .lang-toggle[data-lang="pt"] .lang-knob::before {
-      content: "PT";
-    }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    .lang-toggle[data-lang="pt"] .pt {
-      color: #e2e8f0;
-      font-weight: bold;
-    }
+        /* Sections */
+        section {
+            min-height: 100vh;
+            padding: 100px 2rem 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .lang-toggle[data-lang="pt"] .en {
-      color: #94a3b8;
-      font-weight: normal;
-    }
+        /* Home Section */
+        .home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+        }
 
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 4px;
-    }
+        .hero-content {
+            animation: fadeInUp 1s ease-out;
+        }
 
-    .hamburger span {
-      width: 25px;
-      height: 3px;
-      background: #e2e8f0;
-      transition: 0.3s;
-    }
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
 
-    /* Sections */
-    section {
-      padding: 5rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            color: #3b82f6;
+            font-weight: 600;
+        }
 
-    .section-title {
-      font-size: 2.5rem;
-      text-align: center;
-      margin-bottom: 3rem;
-      color: #f8fafc;
-    }
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
 
-    /* Home Section */
-    .home {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-    }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
 
-    .hero-title {
-      font-size: 4rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
 
-    .hero-subtitle {
-      font-size: 1.5rem;
-      color: #94a3b8;
-      margin-bottom: 1.5rem;
-    }
+        /* About Section */
+        .about {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 50px auto;
+            padding: 80px 50px;
+        }
 
-    .hero-description {
-      font-size: 1.1rem;
-      color: #cbd5e1;
-      max-width: 800px;
-      margin: 0 auto 2rem;
-      line-height: 1.8;
-    }
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #3b82f6;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
 
-    .cta-button {
-      display: inline-block;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 1rem 2rem;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
 
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-    }
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
 
-    /* About Section */
-    .about {
-      background: rgba(30, 41, 59, 0.3);
-      border-radius: 20px;
-      margin: 2rem auto;
-    }
+        .about-image {
+            text-align: center;
+        }
 
-    .about-text p {
-      margin-bottom: 1.5rem;
-      font-size: 1.1rem;
-      color: #cbd5e1;
-      line-height: 1.8;
-    }
+        .profile-img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            margin: 0 auto;
+            animation: float 3s ease-in-out infinite;
+        }
 
-    /* Skills Section */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
+        /* Skills Section */
+        .skills {
+            padding: 100px 2rem;
+        }
 
-    .skill-card {
-      background: rgba(30, 41, 59, 0.5);
-      padding: 2rem;
-      border-radius: 15px;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid rgba(59, 130, 246, 0.2);
-    }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
 
-    .skill-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2);
-    }
+        .skill-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .skill-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
+        .skill-card:hover {
+            transform: translateY(-10px);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+        }
 
-    .skill-name {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: #f8fafc;
-    }
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
 
-    .skill-card p {
-      color: #cbd5e1;
-    }
+        .skill-name {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
 
-    /* Projects Section */
-    .projects {
-      background: rgba(30, 41, 59, 0.3);
-      border-radius: 20px;
-      margin: 2rem auto;
-    }
+        /* Projects Section */
+        .projects {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 50px auto;
+            padding: 80px 50px;
+        }
 
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
-    }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
 
-    .project-card {
-      background: rgba(51, 65, 85, 0.5);
-      border-radius: 15px;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid rgba(59, 130, 246, 0.2);
-    }
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2);
-    }
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+        }
 
-    .project-image {
-      height: 200px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-    }
+        .project-image {
+            height: 200px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #fff;
+        }
 
-    .project-content {
-      padding: 2rem;
-    }
+        .project-content {
+            padding: 1.5rem;
+        }
 
-    .project-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: #f8fafc;
-    }
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #3b82f6;
+        }
 
-    .project-content p {
-      color: #cbd5e1;
-      line-height: 1.6;
-    }
+        .project-tech {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
 
-    /* Contact Section */
-    .contact {
-      text-align: center;
-    }
+        .tech-tag {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
 
-    .contact-form {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
-    }
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            padding: 100px 2rem;
+        }
 
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.5rem;
+        }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: #f8fafc;
-    }
+        .form-group {
+            text-align: left;
+        }
 
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 1rem;
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-radius: 8px;
-      color: #e2e8f0;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #3b82f6;
+        }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
-    }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 1rem;
+        }
 
-    .submit-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
 
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-    }
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
 
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-      }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
 
-      .hamburger {
-        display: flex;
-      }
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-      .hero-title {
-        font-size: 2.5rem;
-      }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+            to { text-shadow: 0 0 30px rgba(139, 92, 246, 0.5); }
+        }
 
-      .hero-subtitle {
-        font-size: 1.2rem;
-      }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
 
-      .section-title {
-        font-size: 2rem;
-      }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(26, 26, 46, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 3rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
 
-      .lang-toggle {
-        right: 3rem;
-      }
+            .nav-links.active {
+                transform: translateX(0);
+            }
 
-      section {
-        padding: 3rem 1rem;
-      }
-    }
-  </style>
+            .nav-links a {
+                font-size: 1.5rem;
+                padding: 1rem 2rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            section {
+                padding: 80px 1rem 30px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav id="navbar">
-    <div class="nav-container">
-      <ul class="nav-links">
-        <li><a href="#home" data-en="Home" data-pt="Início">Home</a></li>
-        <li><a href="#about" data-en="About Me" data-pt="Sobre Mim">About Me</a></li>
-        <li><a href="#skills" data-en="Skills" data-pt="Habilidades">Skills</a></li>
-        <li><a href="#projects" data-en="Projects" data-pt="Projetos">Projects</a></li>
-        <li><a href="#contact" data-en="Contact" data-pt="Contato">Contact</a></li>
-      </ul>
-      <div id="lang-toggle" class="lang-toggle" data-lang="en">
-        <span class="lang-label en active">EN</span>
-        <div class="lang-knob"></div>
-        <span class="lang-label pt">PT</span>
-      </div>
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Home Section -->
-  <section id="home" class="home">
-    <div class="hero-content">
-      <h1 class="hero-title" data-en="Hello, I am Rodrigo" data-pt="Olá, eu sou Rodrigo">Hello, I am Rodrigo</h1>
-      <p class="hero-subtitle" data-en="Full-Stack Developer | Node.js • SQL • Python • AI" data-pt="Desenvolvedor Full-Stack | Node.js • SQL • Python • IA">Full-Stack Developer | Node.js • SQL • Python • AI</p>
-      <p class="hero-description" data-en="Driven by the challenge of creating practical tools, I leverage technology to streamline processes and improve outcomes. With a strong focus on security and risk awareness, I aim to deliver solutions that connect real business demands with innovative technical approaches." data-pt="Motivado pelo desafio de criar ferramentas práticas, utilizo a tecnologia para simplificar processos e melhorar resultados. Com forte foco em segurança e gestão de riscos, busco entregar soluções que conectem as demandas reais de negócios com abordagens técnicas inovadoras.">Driven by the challenge of creating practical tools, I leverage technology to streamline processes and improve outcomes. With a strong focus on security and risk awareness, I aim to deliver solutions that connect real business demands with innovative technical approaches.</p>
-      <a href="#projects" class="cta-button" data-en="View My Work" data-pt="Ver Meus Projetos">View My Work</a>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="about">
-    <h2 class="section-title" data-en="About Me" data-pt="Sobre Mim">About Me</h2>
-    <div class="about-content">
-      <div class="about-text">
-        <p data-en="I am an entry-level Full-Stack Developer with skills in Node.js, SQL, Python, and AI. My career background spans over a decade in external audit, where I provided services for major local and international companies." data-pt="Sou um Desenvolvedor Full-Stack iniciante com habilidades em Node.js, SQL, Python e IA. Minha carreira anterior abrange mais de uma década em auditoria externa, onde prestei serviços para grandes empresas locais e internacionais.">I am an entry-level Full-Stack Developer with skills in Node.js, SQL, Python, and AI. My career background spans over a decade in external audit, where I provided services for major local and international companies.</p>
-        <p data-en="I was responsible for managing engagements under SOX standards for SEC-listed companies, while also designing and delivering training programs on compliance and audit practices." data-pt="Fui responsável por gerenciar trabalhos sob os padrões SOX para empresas listadas na SEC, além de projetar e ministrar treinamentos em conformidade e práticas de auditoria.">I was responsible for managing engagements under SOX standards for SEC-listed companies, while also designing and delivering training programs on compliance and audit practices.</p>
-        <p data-en="Passionate about building new tools and applying technology to enhance efficiency and productivity, I bring a risk-aware and security-focused approach to development." data-pt="Apaixonado por criar novas ferramentas e aplicar tecnologia para aumentar a eficiência e a produtividade, trago uma abordagem de desenvolvimento focada em riscos e segurança.">Passionate about building new tools and applying technology to enhance efficiency and productivity, I bring a risk-aware and security-focused approach to development.</p>
-        <p data-en="I focus on delivering solutions that bridge the gap between business needs and technical innovation." data-pt="Meu foco é entregar soluções que conectam as necessidades de negócios à inovação tecnológica.">I focus on delivering solutions that bridge the gap between business needs and technical innovation.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills" class="skills">
-    <h2 class="section-title" data-en="Skills & Technologies" data-pt="Habilidades & Tecnologias">Skills & Technologies</h2>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-icon">⚛️</div>
-        <div class="skill-name" data-en="React" data-pt="React">React</div>
-        <p data-en="Building dynamic user interfaces with components, props, and hooks." data-pt="Construindo interfaces dinâmicas com componentes, props e hooks.">Building dynamic user interfaces with components, props, and hooks.</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🟢</div>
-        <div class="skill-name" data-en="Node.js & Express.js" data-pt="Node.js & Express.js">Node.js & Express.js</div>
-        <p data-en="Server-side development, REST APIs, and routing." data-pt="Desenvolvimento no lado do servidor, APIs REST e roteamento.">Server-side development, REST APIs, and routing.</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🐍</div>
-        <div class="skill-name" data-en="Python" data-pt="Python">Python</div>
-        <p data-en="Data analysis, automation, and backend development." data-pt="Análise de dados, automação e desenvolvimento backend.">Data analysis, automation, and backend development.</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🗄️</div>
-        <div class="skill-name" data-en="SQL & Databases" data-pt="SQL & Bancos de Dados">SQL & Databases</div>
-        <p data-en="Database design, queries, and optimization." data-pt="Design de banco de dados, consultas e otimização.">Database design, queries, and optimization.</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🤖</div>
-        <div class="skill-name" data-en="AI & Machine Learning" data-pt="IA & Aprendizado de Máquina">AI & Machine Learning</div>
-        <p data-en="Implementing AI solutions and machine learning models." data-pt="Implementando soluções de IA e modelos de aprendizado de máquina.">Implementing AI solutions and machine learning models.</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🔒</div>
-        <div class="skill-name" data-en="Security & Compliance" data-pt="Segurança & Conformidade">Security & Compliance</div>
-        <p data-en="Risk management and security-focused development practices." data-pt="Gerenciamento de riscos e práticas de desenvolvimento focadas em segurança.">Risk management and security-focused development practices.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="projects">
-    <h2 class="section-title" data-en="Featured Projects" data-pt="Projetos em Destaque">Featured Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <div class="project-image">🚀</div>
-        <div class="project-content">
-          <h3 class="project-title" data-en="Full-Stack Web Application" data-pt="Aplicação Web Full-Stack">Full-Stack Web Application</h3>
-          <p data-en="A comprehensive web application built with React and Node.js. Features user authentication, real-time updates, and responsive design with a focus on security and performance." data-pt="Uma aplicação web abrangente construída com React e Node.js. Possui autenticação de usuários, atualizações em tempo real e design responsivo com foco em segurança e performance.">A comprehensive web application built with React and Node.js. Features user authentication, real-time updates, and responsive design with a focus on security and performance.</p>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-      </div>
-      <div class="project-card">
-        <div class="project-image">📊</div>
-        <div class="project-content">
-          <h3 class="project-title" data-en="Data Analytics Dashboard" data-pt="Dashboard de Análise de Dados">Data Analytics Dashboard</h3>
-          <p data-en="Python-based dashboard for data visualization and analysis. Integrates with SQL databases to provide insights and automated reporting for business intelligence." data-pt="Dashboard baseado em Python para visualização e análise de dados. Integra com bancos de dados SQL para fornecer insights e relatórios automatizados para inteligência de negócios.">Python-based dashboard for data visualization and analysis. Integrates with SQL databases to provide insights and automated reporting for business intelligence.</p>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Hello, I am Rodrigo</h1>
+            <p class="hero-subtitle">Full-Stack Developer | Node.js • SQL • Python • AI</p>
+            <p class="hero-description">Driven by the challenge of creating practical tools, I leverage technology to streamline processes and improve outcomes. With a strong focus on security and risk awareness, I aim to deliver solutions that connect real business demands with innovative technical approaches.</p>
+            <a href="#projects" class="cta-button">View My Work</a>
         </div>
-      </div>
-      <div class="project-card">
-        <div class="project-image">🤖</div>
-        <div class="project-content">
-          <h3 class="project-title" data-en="AI-Powered Automation Tool" data-pt="Ferramenta de Automação com IA">AI-Powered Automation Tool</h3>
-          <p data-en="Intelligent automation solution using machine learning to streamline business processes. Built with Python and integrated with existing systems for seamless workflow optimization." data-pt="Solução de automação inteligente usando aprendizado de máquina para otimizar processos de negócios. Construída com Python e integrada com sistemas existentes para otimização perfeita do fluxo de trabalho.">Intelligent automation solution using machine learning to streamline business processes. Built with Python and integrated with existing systems for seamless workflow optimization.</p>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>I am an entry-level Full-Stack Developer with skills in Node.js, SQL, Python, and AI. My career background spans over a decade in external audit, where I provided services for major local and international companies. During this time, I gained extensive knowledge of SOX requirements, including internal controls, risk assessment, and financial statements audit.</p>
+                <p>I was responsible for managing engagements under SOX standards for SEC-listed companies, while also designing and delivering training programs on compliance and audit practices.</p>
+                <p>Passionate about building new tools and applying technology to enhance efficiency and productivity, I bring a risk-aware and security-focused approach to development.</p>
+                <p>I focus on delivering solutions that bridge the gap between business needs and technical innovation.</p>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2 class="section-title" data-en="Get In Touch" data-pt="Entre em Contato">Get In Touch</h2>
-    <p style="margin-bottom: 3rem; font-size: 1.2rem;" data-en="Let's work together to bring your ideas to life!" data-pt="Vamos trabalhar juntos para dar vida às suas ideias!">Let's work together to bring your ideas to life!</p>
-    <form class="contact-form">
-      <div class="form-group">
-        <label for="name" data-en="Name" data-pt="Nome">Name</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div class="form-group">
-        <label for="email" data-en="Email" data-pt="E-mail">Email</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="subject" data-en="Subject" data-pt="Assunto">Subject</label>
-        <input type="text" id="subject" name="subject" required>
-      </div>
-      <div class="form-group">
-        <label for="message" data-en="Message" data-pt="Mensagem">Message</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-      </div>
-      <button type="submit" class="submit-btn" data-en="Send Message" data-pt="Enviar Mensagem">Send Message</button>
-    </form>
-  </section>
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <h2 class="section-title">Skills & Technologies</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon">⚛️</div>
+                <div class="skill-name">React</div>
+                <p>Building dynamic user interfaces with components, props, and hooks.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🟢</div>
+                <div class="skill-name">Node.js & Express.js</div>
+                <p>Server-side development, REST APIs, and routing.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🎨</div>
+                <div class="skill-name">HTML, CSS & JavaScript</div>
+                <p>Core web technologies for structure, styling, and interactivity.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🗄️</div>
+                <div class="skill-name">Databases (SQL)</div>
+                <p>Working with relational databases, queries, and data persistence.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🔧</div>
+                <div class="skill-name">Git & GitHub</div>
+                <p>Version control, collaboration, and project deployment.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">📦</div>
+                <div class="skill-name">npm & Tooling</div>
+                <p>Managing dependencies and automating workflows.</p>
+            </div>
+        </div>
+    </section>
 
-  <script>
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-image">🚀</div>
+                <div class="project-content">
+                    <h3 class="project-title">Project One</h3>
+                    <p>A full-stack web application built with React and Node.js. Features user authentication, real-time updates, and responsive design.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">📊</div>
+                <div class="project-content">
+                    <h3 class="project-title">Project Two</h3>
+                    <p>Data visualization dashboard with interactive charts and real-time analytics. Built for business intelligence and reporting.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">Python</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">🎮</div>
+                <div class="project-content">
+                    <h3 class="project-title">Project Three</h3>
+                    <p>Interactive game built with JavaScript and Canvas API. Features physics simulation and multiplayer capabilities.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Canvas</span>
+                        <span class="tech-tag">WebSocket</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Navbar background on scroll
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(15, 23, 42, 0.98)';
-      } else {
-        navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-      }
-    });
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">Contact Me</h2>
+        <p style="margin-bottom: 2rem; font-size: 1.2rem;">Let's work together to bring your ideas to life!</p>
+        <div style="margin-bottom: 3rem; font-size: 1.1rem;">
+            <p style="margin-bottom: 0.5rem;"><strong>Email:</strong> <a href="mailto:rodrigogmaracaja@gmail.com" style="color: #3b82f6; text-decoration: none;">rodrigogmaracaja@gmail.com</a></p>
+            <p><strong>WhatsApp:</strong> <a href="https://wa.me/5511987184672" style="color: #3b82f6; text-decoration: none;" target="_blank">+55 11 98718-4672</a></p>
+        </div>
+        <form class="contact-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </section>
 
-    // Mobile hamburger menu
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.querySelector('.nav-links');
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
 
-    hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
 
-    // Enhanced Language toggle functionality
-    const toggle = document.getElementById("lang-toggle");
-    const labels = toggle.querySelectorAll(".lang-label");
-    let currentLang = 'en';
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
 
-    toggle.addEventListener("click", () => {
-      currentLang = currentLang === "en" ? "pt" : "en";
-      toggle.setAttribute("data-lang", currentLang);
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
 
-      labels.forEach(label => label.classList.remove("active"));
-      toggle.querySelector(`.${currentLang}`).classList.add("active");
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-      // Update all elements with language data attributes
-      document.querySelectorAll("[data-en]").forEach(el => {
-        const text = el.getAttribute(`data-${currentLang}`);
-        if (text) {
-          el.textContent = text;
-        }
-      });
-    });
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! I\'ll get back to you soon.');
+            e.target.reset();
+        });
 
-    // Form submission handler
-    document.querySelector('.contact-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Get form data
-      const formData = new FormData(this);
-      const name = formData.get('name');
-      const email = formData.get('email');
-      const subject = formData.get('subject');
-      const message = formData.get('message');
-      
-      // Simple validation
-      if (name && email && subject && message) {
-        // In a real application, you would send this data to your server
-        alert(currentLang === 'en' 
-          ? 'Thank you for your message! I\'ll get back to you soon.' 
-          : 'Obrigado pela sua mensagem! Entrarei em contato em breve.'
-        );
-        this.reset();
-      }
-    });
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    // Add some interactive animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    // Observe all sections for scroll animations
-    document.querySelectorAll('section').forEach(section => {
-      section.style.opacity = '0';
-      section.style.transform = 'translateY(30px)';
-      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(section);
-    });
-  </script>
+        // Observe skill cards and project cards
+        document.querySelectorAll('.skill-card, .project-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
